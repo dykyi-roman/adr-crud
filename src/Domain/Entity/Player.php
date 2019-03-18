@@ -39,11 +39,20 @@ final class Player
      */
     private $age;
 
+
+    public function isNullObject(): bool
+    {
+        return $this->id === null;
+    }
+
+    /**
+     * @param Credentials $credentials
+     */
     public function setCredentials(Credentials $credentials): void
     {
         $this->name = $credentials->getName();
-        $this->email = $credentials->getEmail();
-        $this->age = $credentials->getAge();
+        $this->email = $credentials->getEmail()->getAddress();
+        $this->age = $credentials->getAge()->getAge();
     }
 
     /**

@@ -16,7 +16,7 @@ namespace App\Domain\Exception;
 
 use Throwable;
 
-class PlayerCreateException extends \RuntimeException
+final class PlayerCreateException extends \RuntimeException
 {
     private const MESSAGE = 'Can`t create player';
 

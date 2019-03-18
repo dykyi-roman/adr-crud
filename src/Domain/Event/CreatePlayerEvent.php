@@ -18,6 +18,8 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class CreatePlayerEvent extends Event
 {
+    public const NAME = 'player.create';
+
     /**
      * Variable
      *

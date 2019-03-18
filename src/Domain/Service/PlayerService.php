@@ -3,10 +3,13 @@
 namespace App\Domain\Service;
 
 use App\Domain\Event\CreatePlayerEvent;
+use App\Domain\Exception\PlayerCreateException;
 use App\Domain\Repository\PlayerRepository;
 use App\Domain\VO\Credentials;
-use App\Domain\Exception\PlayerCreateException;
-use Doctrine\ORM\ORMException;
+use App\Responder\DTO\PlayerDTO;
+use Immutable\Exception\ImmutableObjectException;
+use Immutable\Exception\InvalidValueException;
+use Immutable\ValueObject\Email;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -52,13 +55,24 @@ final class PlayerService
     {
         try {
             $this->playerRepository->create($credentials);
-
-            $this->eventDispatcher->dispatch(
-                new CreatePlayerEvent($credentials->getName())
-            );
-
-        } catch (ORMException $e) {
+            $this->eventDispatcher->dispatch(CreatePlayerEvent::NAME, new CreatePlayerEvent($credentials->getName()));
+        } catch (\Exception $e) {
             throw new PlayerCreateException();
         }
+    }
+
+    /**
+     * @param Email $email
+     *
+     * @return PlayerDTO
+     *
+     * @throws ImmutableObjectException
+     * @throws InvalidValueException
+     */
+    public function getPlayerInfo(Email $email): PlayerDTO
+    {
+        $payload = $this->playerRepository->getPlayerByEmail($email->getAddress());
+
+        return new PlayerDTO($payload);
     }
 }

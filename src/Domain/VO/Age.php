@@ -54,4 +54,12 @@ final class Age extends ValueObject
             'age' => $age,
         ]);
     }
+
+    /**
+     * @return int
+     */
+    public function getAge(): int
+    {
+        return $this->age;
+    }
 }

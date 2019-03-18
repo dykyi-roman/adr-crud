@@ -14,6 +14,8 @@
 
 namespace App\Responder\Response;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
  * Class HtmlResponder
  *
@@ -23,9 +25,9 @@ namespace App\Responder\Response;
  * @license  https://www.booi.com Booi
  * @link     ****
  */
-abstract class JsonResponder
+abstract class JsonResponder extends JsonResponse
 {
-    abstract public function successResponse(array $data = []): array;
+    abstract public function successResponse(array $data = []): JsonResponse;
 
-    abstract public function failureResponse(array $data = []): array;
+    abstract public function failureResponse(array $data = []): JsonResponse;
 }

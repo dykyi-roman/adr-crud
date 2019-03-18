@@ -14,6 +14,7 @@
 
 namespace App\Domain\VO;
 
+use Immutable\Exception\InvalidValueException;
 use Immutable\ValueObject\Email;
 
 final class Credentials
@@ -45,6 +46,7 @@ final class Credentials
      * @param int    $age
      *
      * @throws \Immutable\Exception\ImmutableObjectException
+     * @throws InvalidValueException
      */
     public function __construct(string $email, string $name, int $age)
     {

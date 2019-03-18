@@ -14,16 +14,31 @@
 
 namespace App\Responder\DTO;
 
-/**
- * Class PlayerDTO
- *
- * @category Web-project
- * @package  Booi
- * @author   PHP Developer <developer@email.com>
- * @license  https://www.booi.com Booi
- * @link     ****
- */
+use App\Domain\Entity\Player;
+
 final class PlayerDTO
 {
+    /**
+     * Variable
+     *
+     * @var Player |
+     */
+    private $entity;
 
+    public function __construct(Player $entity)
+    {
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->entity->getName(),
+            'email' => $this->entity->getEmail(),
+            'age' => $this->entity->getAge(),
+        ];
+    }
 }
