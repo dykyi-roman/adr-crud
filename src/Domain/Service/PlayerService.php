@@ -69,10 +69,23 @@ final class PlayerService
      * @throws ImmutableObjectException
      * @throws InvalidValueException
      */
-    public function getPlayerInfo(Email $email): PlayerDTO
+    public function info(Email $email): PlayerDTO
     {
         $payload = $this->playerRepository->getPlayerByEmail($email->getAddress());
 
         return new PlayerDTO($payload);
+    }
+
+    /**
+     * @param Email $email
+     *
+     * @return bool
+     *
+     * @throws ImmutableObjectException
+     * @throws InvalidValueException
+     */
+    public function delete(Email $email): bool
+    {
+        return $this->playerRepository->deletePlayerByEmail($email->getAddress());
     }
 }

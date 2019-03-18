@@ -39,6 +39,12 @@ final class Player
      */
     private $age;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="is_deleted", type="integer")
+     */
+    private $isDeleted;
 
     public function isNullObject(): bool
     {
@@ -109,5 +115,21 @@ final class Player
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIsDeleted(): int
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * @param int $isDeleted
+     */
+    public function setIsDeleted(int $isDeleted): void
+    {
+        $this->isDeleted = $isDeleted;
     }
 }

@@ -16,7 +16,7 @@ namespace App\Responder\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class CreatePlayerResponse extends JsonResponder
+class DeletePlayerResponse extends JsonResponder
 {
     /**
      * @param array $data
@@ -25,7 +25,7 @@ class CreatePlayerResponse extends JsonResponder
      */
     public function successResponse(array $data = []): JsonResponse
     {
-        return new JsonResponse(['message' => 'Player is created!'], 201);
+        return new JsonResponse(['message' => 'Player is deleted!']);
     }
 
     /**

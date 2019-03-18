@@ -6,7 +6,6 @@ use App\Domain\Entity\Player;
 use App\Domain\VO\Credentials;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Immutable\ValueObject\Email;
 
 /**
  * Class PlayerRepository
@@ -50,5 +49,23 @@ final class PlayerRepository extends EntityRepository
         } catch (NonUniqueResultException $e) {
             return new Player();
         }
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return bool
+     */
+    public function deletePlayerByEmail(string $email): bool
+    {
+        $status = $this->createQueryBuilder('p')
+            ->update(Player::class, 'p')
+            ->set('p.isDeleted', 1)
+            ->where('p.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->execute();
+
+        return (bool)$status;
     }
 }
