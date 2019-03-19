@@ -16,9 +16,11 @@ namespace App\Domain\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-final class CreatePlayerEvent extends Event
+final class PlayerEvent extends Event
 {
-    public const NAME = 'player.create';
+    public const CREATE = 'player.create';
+    public const DELETE = 'player.delete';
+    public const UPDATE = 'player.update';
 
     /**
      * Variable

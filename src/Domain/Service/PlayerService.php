@@ -2,14 +2,11 @@
 
 namespace App\Domain\Service;
 
-use App\Domain\Event\CreatePlayerEvent;
+use App\Domain\Event\PlayerEvent;
 use App\Domain\Exception\PlayerCreateException;
 use App\Domain\Repository\PlayerRepository;
 use App\Domain\VO\Credentials;
 use App\Responder\DTO\PlayerDTO;
-use Immutable\Exception\ImmutableObjectException;
-use Immutable\Exception\InvalidValueException;
-use Immutable\ValueObject\Email;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -35,57 +32,85 @@ final class PlayerService
      * @var EventDispatcherInterface |
      */
     private $eventDispatcher;
+    /**
+     * Variable
+     *
+     * @var ValidationService |
+     */
+    private $validationService;
 
     /**
      * PlayerService constructor.
      *
+     * @param ValidationService        $validationService
      * @param PlayerRepository         $playerRepository
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(PlayerRepository $playerRepository, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        ValidationService $validationService,
+        PlayerRepository $playerRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->playerRepository = $playerRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->validationService = $validationService;
     }
 
     /**
      * @param Credentials $credentials
      */
-    public function createNewPlayer(Credentials $credentials): void
+    public function create(Credentials $credentials): void
     {
+        $this->validationService->assertEmail($credentials->getEmail());
         try {
             $this->playerRepository->create($credentials);
-            $this->eventDispatcher->dispatch(CreatePlayerEvent::NAME, new CreatePlayerEvent($credentials->getName()));
+            $this->eventDispatcher->dispatch(PlayerEvent::CREATE, new PlayerEvent($credentials->getEmail()));
         } catch (\Exception $e) {
             throw new PlayerCreateException();
         }
     }
 
     /**
-     * @param Email $email
+     * @param string $email
      *
      * @return PlayerDTO
-     *
-     * @throws ImmutableObjectException
-     * @throws InvalidValueException
      */
-    public function info(Email $email): PlayerDTO
+    public function info(string $email): PlayerDTO
     {
-        $payload = $this->playerRepository->getPlayerByEmail($email->getAddress());
+        $this->validationService->assertEmail($email);
+        $payload = $this->playerRepository->getPlayerByEmail($email);
 
         return new PlayerDTO($payload);
     }
 
     /**
-     * @param Email $email
+     * @param string $email
      *
      * @return bool
-     *
-     * @throws ImmutableObjectException
-     * @throws InvalidValueException
      */
-    public function delete(Email $email): bool
+    public function delete(string $email): bool
     {
-        return $this->playerRepository->deletePlayerByEmail($email->getAddress());
+        $this->validationService->assertEmail($email);
+        if ($status = $this->playerRepository->deletePlayerByEmail($email)) {
+            $this->eventDispatcher->dispatch(PlayerEvent::DELETE, new PlayerEvent($email));
+        }
+
+        return $status;
+    }
+
+    /**
+     * @param string $email
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function update(string $email, string $name): bool
+    {
+        $this->validationService->assertEmail($email);
+        if ($status = $this->playerRepository->changePlayerNameByEmail($email, $name)) {
+            $this->eventDispatcher->dispatch(PlayerEvent::UPDATE, new PlayerEvent($email));
+        }
+
+        return $status;
     }
 }

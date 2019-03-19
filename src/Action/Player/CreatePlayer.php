@@ -3,11 +3,11 @@
 namespace App\Action\Player;
 
 use App\Domain\Exception\PlayerCreateException;
+use App\Domain\Exception\ValidationAgeException;
+use App\Domain\Exception\ValidationEmailException;
 use App\Domain\Service\PlayerService;
 use App\Domain\VO\Credentials;
 use App\Responder\Response\CreatePlayerResponse;
-use Immutable\Exception\ImmutableObjectException;
-use Immutable\Exception\InvalidValueException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,16 +26,14 @@ final class CreatePlayer
     public function handle(Request $request, PlayerService $playerService, CreatePlayerResponse $response): JsonResponse
     {
         try {
-            $playerService->createNewPlayer(
+            $playerService->create(
                 new Credentials(
                     $request->get('email', ''),
                     $request->get('name', ''),
                     (int)$request->get('age', 0)
                 )
             );
-        } catch (PlayerCreateException $exception) {
-            return $response->failureResponse(['message' => $exception->getMessage()]);
-        } catch (ImmutableObjectException | InvalidValueException $exception) {
+        } catch (PlayerCreateException | ValidationEmailException | ValidationAgeException $exception) {
             return $response->failureResponse(['message' => $exception->getMessage()]);
         }
 

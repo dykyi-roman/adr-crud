@@ -58,14 +58,29 @@ final class PlayerRepository extends EntityRepository
      */
     public function deletePlayerByEmail(string $email): bool
     {
-        $status = $this->createQueryBuilder('p')
+        return (bool)$this->createQueryBuilder('p')
             ->update(Player::class, 'p')
             ->set('p.isDeleted', 1)
             ->where('p.email = :email')
             ->setParameter('email', $email)
             ->getQuery()
             ->execute();
+    }
 
-        return (bool)$status;
+    /**
+     * @param string $email
+     * @param        $newName
+     *
+     * @return bool
+     */
+    public function changePlayerNameByEmail(string $email, $newName): bool
+    {
+        return (bool)$this->createQueryBuilder('p')
+            ->update(Player::class, 'p')
+            ->set('p.name', $newName)
+            ->where('p.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->execute();
     }
 }

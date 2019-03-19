@@ -16,7 +16,7 @@ namespace App\Responder\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ReadPlayerResponse extends JsonResponder
+final class ReadPlayerResponse extends JsonResponder
 {
     /**
      * @param array $data

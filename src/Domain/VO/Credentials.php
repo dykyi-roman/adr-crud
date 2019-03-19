@@ -14,6 +14,8 @@
 
 namespace App\Domain\VO;
 
+use App\Domain\Exception\ValidationEmailException;
+use Immutable\Exception\ImmutableObjectException;
 use Immutable\Exception\InvalidValueException;
 use Immutable\ValueObject\Email;
 
@@ -45,20 +47,31 @@ final class Credentials
      * @param string $name
      * @param int    $age
      *
-     * @throws \Immutable\Exception\ImmutableObjectException
-     * @throws InvalidValueException
      */
     public function __construct(string $email, string $name, int $age)
     {
-        $this->email = new Email($email);
         $this->name = $name;
-        $this->age = new Age($age);
+        $this->email = $email;
+        $this->setAge($age);
+
     }
 
     /**
-     * @return Email
+     * @param int $age
      */
-    public function getEmail(): Email
+    private function setAge(int $age): void
+    {
+        try {
+            $this->age = new Age($age);
+        } catch (ImmutableObjectException | InvalidValueException $exception) {
+            throw new ValidationEmailException($exception);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
     {
         return $this->email;
     }

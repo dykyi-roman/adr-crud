@@ -2,11 +2,9 @@
 
 namespace App\Action\Player;
 
+use App\Domain\Exception\ValidationEmailException;
 use App\Domain\Service\PlayerService;
 use App\Responder\Response\ReadPlayerResponse;
-use Immutable\Exception\ImmutableObjectException;
-use Immutable\Exception\InvalidValueException;
-use Immutable\ValueObject\Email;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,10 +23,10 @@ final class ReadPlayer
     public function handle(Request $request, PlayerService $playerService, ReadPlayerResponse $response): JsonResponse
     {
         try {
-            $player = $playerService->info(new Email($request->get('email', '')));
+            $player = $playerService->info($request->get('email', ''));
 
             return $response->successResponse($player->toArray());
-        } catch (ImmutableObjectException | InvalidValueException $exception) {
+        } catch (ValidationEmailException $exception) {
             return $response->failureResponse(['message' => $exception->getMessage()]);
         }
     }

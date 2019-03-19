@@ -6,17 +6,17 @@ use App\Responder\Response\HtmlResponder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ReadAction
+final class UpdateAction
 {
     /**
      * @param HtmlResponder $response
      *
      * @return Response
      *
-     * @Route("/player/read", name="read_page")
+     * @Route("/player/update", name="update_page")
      */
     public function handle(HtmlResponder $response): Response
     {
-        return $response->response('player/read');
+        return $response->response('player/update');
     }
 }

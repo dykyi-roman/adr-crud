@@ -16,7 +16,7 @@ namespace App\Responder\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeletePlayerResponse extends JsonResponder
+final class DeletePlayerResponse extends JsonResponder
 {
     /**
      * @param array $data
