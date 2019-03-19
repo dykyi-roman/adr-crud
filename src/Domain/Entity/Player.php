@@ -57,7 +57,7 @@ final class Player
     public function setCredentials(Credentials $credentials): void
     {
         $this->name = $credentials->getName();
-        $this->email = $credentials->getEmail()->getAddress();
+        $this->email = $credentials->getEmail();
         $this->age = $credentials->getAge()->getAge();
     }
 

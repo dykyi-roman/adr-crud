@@ -17,14 +17,13 @@ namespace App\Domain\VO;
 use App\Domain\Exception\ValidationEmailException;
 use Immutable\Exception\ImmutableObjectException;
 use Immutable\Exception\InvalidValueException;
-use Immutable\ValueObject\Email;
 
 final class Credentials
 {
     /**
      * Variable
      *
-     * @var Email |
+     * @var string |
      */
     private $email;
     /**
@@ -53,18 +52,18 @@ final class Credentials
         $this->name = $name;
         $this->email = $email;
         $this->setAge($age);
-
     }
 
     /**
      * @param int $age
+     *
      */
     private function setAge(int $age): void
     {
         try {
             $this->age = new Age($age);
         } catch (ImmutableObjectException | InvalidValueException $exception) {
-            throw new ValidationEmailException($exception);
+            throw new ValidationEmailException();
         }
     }
 

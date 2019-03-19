@@ -45,7 +45,6 @@ final class PlayerRepository extends EntityRepository
                 ->setParameter('email', $email)
                 ->getQuery()
                 ->getOneOrNullResult();
-
         } catch (NonUniqueResultException $e) {
             return new Player();
         }
