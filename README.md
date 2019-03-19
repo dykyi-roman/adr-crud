@@ -26,6 +26,7 @@ _Responder_ is the presentation logic to build an HTTP response from the data it
 
 ## Reading
  - https://github.com/pmjones/adr/blob/master/MENTIONS.md
+ - https://herbertograca.com/2018/09/03/action-domain-responder/
  - http://pmjones.io/adr/
  - https://blog.bitexpert.de/blog/controller-classes-vs.-action-classes
  - https://jenssegers.com/85/goodbye-controllers-hello-request-handlers?utm_content=buffer0c6b3&utm_medium=social&utm_source=linkedin.com&utm_campaign=buffer
