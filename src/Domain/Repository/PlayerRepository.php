@@ -9,12 +9,6 @@ use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class PlayerRepository
- *
- * @category Web-project
- * @package  Booi
- * @author   PHP Developer <developer@email.com>
- * @license  https://www.booi.com Booi
- * @link     ****
  */
 final class PlayerRepository extends EntityRepository
 {

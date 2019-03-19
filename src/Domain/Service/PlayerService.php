@@ -11,12 +11,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class PlayerService
- *
- * @category Web-project
- * @package  Booi
- * @author   PHP Developer <developer@email.com>
- * @license  https://www.booi.com Booi
- * @link     ****
  */
 final class PlayerService
 {

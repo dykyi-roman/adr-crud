@@ -42,5 +42,7 @@ services:
 
     Psr\Http\Message\ResponseInterface: '@Symfony\Component\HttpFoundation\Response'
 
+    App\Responder\Response\ResponderInterface: '@App\Responder\Response\HtmlResponder'
+
     App\Domain\Event\CreatePlayerEvent:
         autowire: false
